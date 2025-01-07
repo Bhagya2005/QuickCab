@@ -1,0 +1,171 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #fafafa;
+    color: #333;
+  }
+  
+  /* Navbar */
+  nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  nav ul li {
+    margin: 0 10px;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 1rem;
+    padding: 10px;
+    transition: color 0.3s;
+  }
+  
+  nav ul li a:hover {
+    color: #4CAF50;
+  }
+  
+  /* About Container */
+  .about-container {
+    padding-top: 64px;
+    min-height: 100vh;
+    background-color: #ffffff;
+  }
+  
+  /* Content Section */
+  .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .animation-placeholder {
+    background: #f0f0f0;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 1.5rem;
+    color: #64748b;
+  }
+  
+  .text-section {
+    padding: 2rem;
+  }
+  
+  .text-section h2 {
+    margin-bottom: 1.5rem;
+    color: #4CAF50;
+  }
+  
+  ul {
+    list-style: none;
+    margin-bottom: 2rem;
+  }
+  
+  li {
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+    color: #333;
+  }
+  
+  li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+  }
+  
+  /* Services */
+  .services {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 1200px;
+  }
+  
+  .services h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4CAF50;
+    font-size: 2rem;
+  }
+  
+  /* Card Container */
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  /* Individual Card */
+  .card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: calc(33% - 40px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .card h3 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+  }
+  
+  .card p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Footer Styling */
+  footer {
+    background: #4CAF50;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
+  }
+  
+  footer p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .card {
+      width: calc(50% - 40px);
+    }
+  
+    .content {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .card {
+      width: 100%;
+    }
+  }
+  

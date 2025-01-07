@@ -1,124 +1,156 @@
 import React, { useState, useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { UserDataContext } from '../context/UserContext'
-
-
+import Navbar from '../components/Navbar'
 
 const UserSignup = () => {
-  const [ email, setEmail ] = useState('')
-  const [ password, setPassword ] = useState('')
-  const [ firstName, setFirstName ] = useState('')
-  const [ lastName, setLastName ] = useState('')
-  const [ userData, setUserData ] = useState({})
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate()
-
-
-
   const { user, setUser } = useContext(UserDataContext)
-
-
-
 
   const submitHandler = async (e) => {
     e.preventDefault()
+    setLoading(true)
+    setError('')
+
     const newUser = {
       fullname: {
         firstname: firstName,
-        lastname: lastName
+        lastname: lastName,
       },
       email: email,
-      password: password
+      password: password,
     }
 
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/users/register`,
+        newUser
+      )
 
-    if (response.status === 201) {
-      const data = response.data
-      setUser(data.user)
-      localStorage.setItem('token', data.token)
-      navigate('/home')
+      if (response.status === 201) {
+        const data = response.data
+        setUser(data.user)
+        localStorage.setItem('token', data.token)
+        navigate('/home')
+      }
+    } catch (err) {
+      setError('Failed to create account. Please try again.')
+    } finally {
+      setLoading(false)
     }
-
 
     setEmail('')
     setFirstName('')
     setLastName('')
     setPassword('')
-
   }
+
   return (
-    <div>
-      <div className='p-7 h-screen flex flex-col justify-between'>
-        <div>
-          <img className='w-16 mb-10' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQy-OIkA6In0fTvVwZADPmFFibjmszu2A0g&s" alt="" />
-
-          <form onSubmit={(e) => {
-            submitHandler(e)
-          }}>
-
-            <h3 className='text-lg w-1/2  font-medium mb-2'>What's your name</h3>
-            <div className='flex gap-4 mb-7'>
+    <div className="py-5 px-5 h-screen flex flex-col justify-between bg-white text-gray-900">
+      <Navbar />
+      <div>
+        <form className="max-w-md mx-auto mt-0 mb-12" onSubmit={submitHandler}>
+          <div className="grid md:grid-cols-2 md:gap-2">
+            <div className="relative z-0 w-full mb-5 group">
               <input
                 required
-                className='bg-[#eeeeee] w-1/2 rounded-lg px-4 py-2 border  text-lg placeholder:text-base'
                 type="text"
-                placeholder='First name'
+                name="first_name"
+                id="first_name"
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" "
                 value={firstName}
-                onChange={(e) => {
-                  setFirstName(e.target.value)
-                }}
+                onChange={(e) => setFirstName(e.target.value)}
               />
+              <label
+                htmlFor="first_name"
+                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >
+                First Name
+              </label>
+            </div>
+            <div className="relative z-0 w-full mb-5 group">
               <input
                 required
-                className='bg-[#eeeeee] w-1/2  rounded-lg px-4 py-2 border  text-lg placeholder:text-base'
                 type="text"
-                placeholder='Last name'
+                name="last_name"
+                id="last_name"
+                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" "
                 value={lastName}
-                onChange={(e) => {
-                  setLastName(e.target.value)
-                }}
+                onChange={(e) => setLastName(e.target.value)}
               />
+              <label
+                htmlFor="last_name"
+                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              >
+                Last Name
+              </label>
             </div>
+          </div>
 
-            <h3 className='text-lg font-medium mb-2'>What's your email</h3>
+          {/* Email Input */}
+          <div className="relative z-0 w-full mb-5 group">
             <input
               required
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value)
-              }}
-              className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
               type="email"
-              placeholder='email@example.com'
+              name="email"
+              id="email"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
+            <label
+              htmlFor="email"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Email
+            </label>
+          </div>
 
-            <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
-
+          {/* Password Input */}
+          <div className="relative z-0 w-full mb-5 group">
             <input
-              className='bg-[#eeeeee] mb-7 rounded-lg px-4 py-2 border w-full text-lg placeholder:text-base'
+              required
+              type="password"
+              name="password"
+              id="password"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none text-black dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              placeholder=" "
               value={password}
-              onChange={(e) => {
-                setPassword(e.target.value)
-              }}
-              required type="password"
-              placeholder='password'
+              onChange={(e) => setPassword(e.target.value)}
             />
+            <label
+              htmlFor="password"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Password
+            </label>
+          </div>
 
-            <button
-              className='bg-[#111] text-white font-semibold mb-3 rounded-lg px-4 py-2 w-full text-lg placeholder:text-base'
-            >Create account</button>
+          {/* Error message display */}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          </form>
-          <p className='text-center'>Already have a account? <Link to='/login' className='text-blue-600'>Login here</Link></p>
-        </div>
-        <div>
-          <p className='text-[10px] leading-tight'>This site is protected by reCAPTCHA and the <span className='underline'>Google Privacy
-            Policy</span> and <span className='underline'>Terms of Service apply</span>.</p>
-        </div>
+          {/* Loading spinner or Submit button */}
+          {loading ? (
+            <div className="spinner">Loading...</div> // Add a proper spinner or loader here
+          ) : (
+            <button type="submit" className="w-full py-2 bg-blue-500 text-white rounded mt-5">
+              Sign Up
+            </button>
+          )}
+        </form>
       </div>
-    </div >
+    </div>
   )
 }
 
